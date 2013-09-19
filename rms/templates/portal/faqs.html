@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RMS | Welcome</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+ 
+	
+
+     
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+	  
+	  footer {
+		display: block;
+		margin-left: 30px;
+		position:fixed;
+		bottom:0px;
+	  }  
+    </style>
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />-->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+	
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    
+  </head>
+
+  <body>
+     
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a href="/" class="brand" >National Institute of Technology Calicut</a>
+		  
+		  <a style="float:right"; class="brand" href="/logout/"><i class="icon-arrow-right"></i>  logout</a>
+			<a style="float:right"; class="brand" href="/dashboard/">Welcome  {{user.first_name}} {{user.last_name}} |</a>
+			<a style="float:right"; class="brand" href="/changepass/">Change password |</a>
+          <!--<a class="brand" style="float=left"; href="#">National Institute of Technology Calicut</a> -->
+         <div class="nav-collapse collapse">
+            <ul class="nav">
+			
+              <li ><a href="/dashboard/">Dashboard</a></li>
+              <li><a href="/profile/">Your Profile</a></li>
+               <li><a href="/booking/">Booking</a></li>
+			   <li class="active" ><a href="/help/">FAQs</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+
+        </div>
+      </div>
+    </div>
+
+
+		  
+
+ 	  
+		  
+<div class="container">
+
+<style type="text/css">
+      .container,
+	  .navbar-static-top .container,
+      .navbar-fixed-top .container,
+      .navbar-fixed-bottom .container {
+		width: 100%;
+	   }
+  
+	  .navbar .brand {
+		display: block;
+		float: left;
+		padding: 10px 20px 10px;
+		margin-left: 1px;
+		font-size: 13px;
+		font-weight: 200;
+		color: white;
+		text-shadow: 0 1px 0 #474545;
+	   }
+
+
+	   
+
+	   .row-fluid .span9 {
+		 width: 90%;
+		 *width: 74.30578286961266%;
+	   }
+  
+	   .row-fluid .span5 {
+		 width: 99.77094%;
+		 *width: 40.11774868157847%;
+	   }
+  
+	   .row-fluid [class*="span"]:first-child {
+		 margin: auto;
+	   }
+  
+  
+		
+    </style>
+ 
+ 
+ 
+ <div class="container-fluid">
+      <div class="row-fluid">
+		<div class="span9">	
+        
+		<h3>Frequently Asked Questions</h3>
+		<div id="accordion">
+		<h4 >1. Can we book a resource on today's date</h4>
+			  <div class="accordion-inner">
+				<p>
+                &#9658; Resources management system does not allow booking for the current date to be done on current date.
+				You can only book resources from the day next to the current date.
+				</p>
+			  </div>
+		<h4>2. Can anyone register for Resources management system</h4>
+			  <div class="accordion-inner">
+				<p>
+                &#9658; Since Resources management system is built with the sole purpose to manage
+				various resources of Computer Science and Engineering department of National Institute of Technology,
+                only Faculty, staff and students are allowed to do registration. However students need to get their registration approved from the admin 
+                so that they can start using the system.				
+				</p>
+			    </div>
+		  
+        
+      </div>
+	  </div><!--/row-->
+
+      
+
+      
+
+    </div><!--/.fluid-container-->
+
+
+
+ 
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="/static/css/js/bootstrap.js"></script>
+    <script>
+  $(function() {
+    $( "#accordion" ).accordion();
+  });
+  </script>
+	
+  </body>
+</html>

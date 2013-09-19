@@ -1,0 +1,6 @@
+*.pyc
+*.swp
+local_urls.py
+static_root/
+logs/
+rms.db

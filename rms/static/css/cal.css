@@ -1,0 +1,19 @@
+html, body { margin: 0; padding: 0 }
+body { background-color:#060; }
+#container { margin: 3em auto 0 3em; padding-bottom: 3em; background-color: #fff; }
+#month { border-collapse: collapse; margin-left: 2em; }
+#month th, #month td { border: 1px solid #000; }
+#month thead { background-color:#9c9; }
+#month td { width: 7em; height: 7em; padding: .2em; vertical-align: top; overflow: auto; }
+td .day { width: 7em; height: 6em; overflow:auto; margin-top: 0; }
+#month tbody .weekend { background-color:#ded; }
+#month tbody .next, #month tbody .previous { background-color:#ddd; }
+.rtop { display:block; background:#060; }
+.rtop * { display: block; height: 1px; overflow: hidden; background:#fff; }
+.r1{margin: 0 0 0 5px}
+.r2{margin: 0 0 0 3px}
+.r3{margin: 0 0 0 2px}
+.r4{margin: 0 0 0 1px; height: 2px}
+#container h1 { margin: 0 0 .5em .5em; font: 2em Arial, Helvetica, sans-serif; color: #060; }
+#month th { font: 1em bold Arial, Helvetica, sans-serif; }
+p {margin-top: 0; }

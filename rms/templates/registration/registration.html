@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% comment %}
+ 
+Registration page to Register users.
+ 
+{% endcomment %}
+ 
+{% block title %}RMS | Registration{% endblock %}
+ 
+{% block main %}
+<style>
+.span4 {
+    width: 60%;
+  }
+
+</style>
+    <div class="row">
+	
+                    <div class="alert fade in" id="login-error" style="background-color:grey; color:#F5F3F0;" >
+    
+                          <strong>NOTE !</strong> Once you have registered. Kindly meet the admin and get your registration confirmed.
+                    </div> 
+        
+        <div class="span4">
+		
+                    <div class="alert fade in" id="login-error" style="background-color:grey; color:#F5F3F0;" >
+    
+                         <strong>NOTE !</strong> Please use your NITC email id as username.
+                    </div>
+                <form action="" method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input  type="submit" value="Register">
+                </form>	  
+       </div>
+	   <div class="span4">
+
+ 
+ 
+                 		
+		</div>
+        
+    </div>
+
+      <hr>
+    <script>
+	$('.alert .close').live("click", function(e) {
+    $(this).parent().hide();
+});
+	</script>
+{% endblock %}

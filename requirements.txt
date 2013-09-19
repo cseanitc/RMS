@@ -1,0 +1,4 @@
+Django==1.4.8
+django_dajax
+jsonpickle
+

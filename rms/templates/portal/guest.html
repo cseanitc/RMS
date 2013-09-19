@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+{% load dajaxice_templatetags %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RMS| Guest</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	 <meta name="author" content="">
+	    {% dajaxice_js_import %}
+	 <script type="text/javascript" src="/static/css/dajax/jquery.dajax.core.js"></script>
+		<link rel='stylesheet' type='text/css' href='/static/css/fullcalendar.css' />
+    <link rel='stylesheet' type='text/css' href='/static/css/fullcalendar.print.css' media='print' />
+	<script type='text/javascript' src='/static/jquery/jquery-1.8.1.min.js'></script>
+	<script type='text/javascript' src='/static/jquery/jquery-ui-1.8.23.custom.min.js'></script>
+	<script type='text/javascript' src='/static/js/fullcalendar.min.js'></script>
+	<script type='text/javascript' src='/static/js/bootstrap-modal.js'></script>
+	<link rel="stylesheet" href="/static/css/jquery-ui.css" />
+  
+    <script src="/static/jquery/jquery.ui.datepicker.js"></script>
+  
+
+
+
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	
+    
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+  </head>
+
+
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			editable: false,
+			events: [
+			    {% for r in res %}
+			    {% for calendar in calendar_list %}
+				{% if r.id == calendar.resource_id %}
+				{
+					
+					{% if calendar.all_day_event == 0 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, {{calendar.start_time}}-{{calendar.end_time}}',
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+					
+					{% if calendar.all_day_event == 1 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, all day',
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+
+					{% if calendar.all_day_event == 2 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, {{calendar.start_date|date:'M d'}}, {{calendar.start_time}}-{{calendar.end_date|date:'M d'}}, {{calendar.end_time}}',
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+				},
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+			],
+			 eventClick: function(calEvent, jsEvent, view) {
+
+       	Dajaxice.dashboard.eInfo(Dajax.process,{'option':calEvent.id});
+        $('#infoModal').modal();
+        
+
+    }
+		});
+		
+	});
+	
+
+  
+ 
+ 
+
+</script>
+<style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+	.fc-event-time{
+                display:none;
+        }
+
+	  #calendar {
+		width: 60%;
+        margin: auto;
+		
+		}
+	  .container,
+      .navbar-static-top .container,
+      .navbar-fixed-top .container,
+      .navbar-fixed-bottom .container {
+        width: 100%;
+       }
+  
+      .navbar .brand {
+        display: block;
+        float: left;
+        padding: 10px 20px 10px;
+        margin-left: 1px;
+        font-size: 13px;
+        font-weight: 200;
+        color: white;
+        text-shadow: 0 1px 0 #474545;
+       }
+
+      .row-fluid .span3 {
+        width: 23.404255319148934%;
+        *width: 23.351063829787233%;
+        background-color: rgb(166, 175, 170);
+       }
+
+      .row-fluid .span9 {
+        width: 70.358974%;
+        *width: 74.30578286961266%;
+       }
+  
+      .row-fluid .span5 {
+        width: 77.77094%;
+        *width: 40.11774868157847%;
+       }
+  
+      .row-fluid [class*="span"]:first-child {
+        margin-left: 10px;
+	    width: 16%;
+       }
+  
+      .row-fluid .span2 {
+        width: 16.52991452991453%;
+        *width: 14.476723040552828%;
+	    position: fixed;
+	   }
+	
+       footer {
+        display: block;
+        margin-left: 30px;
+        position:fixed;
+        bottom:0px;
+       }  
+
+       .ui-icon,
+       .ui-widget-content .ui-icon {
+	     background-image: url(/static/img/ui-icons_222222_256x240.png)/*{iconsContent}*/;
+       }
+
+	   .ui-widget-header .ui-icon {
+	     background-image: url(/static/img/ui-icons_222222_256x240.png)/*{iconsHeader}*/; 
+       }
+
+	   .ui-state-default .ui-icon {
+	     background-image: url(/static/img/ui-icons_888888_256x240.png)/*{iconsDefault}*/;
+       }
+
+	   .ui-state-hover .ui-icon,
+
+	   .ui-state-focus .ui-icon {
+	     background-image: url(/static/img/ui-icons_454545_256x240.png)/*{iconsHover}*/;
+       }
+
+	   .ui-state-active .ui-icon {
+	     background-image: url(/static/img/ui-icons_454545_256x240.png)/*{iconsActive}*/;
+       }
+
+	   .ui-state-highlight .ui-icon {
+	     background-image: url(/static/img/ui-icons_2e83ff_256x240.png)/*{iconsHighlight}*/;
+       }
+
+	   .ui-state-error .ui-icon,
+
+	   .ui-state-error-text .ui-icon {
+	     background-image: url(/static/img/ui-icons_cd0a0a_256x240.png)/*{iconsError}*/;
+       }
+
+        .modalInfo {
+		 position: fixed;
+		 top: 10%;
+		 left: 35%;
+		 z-index: 1050;
+		 width: 60%;
+		 height: 30%;
+		 margin-left: -200px;
+		 background-color: #ffffff;
+		 border: 1px solid #999;
+		 border: 1px solid rgba(0, 0, 0, 0.3);
+		 *border: 1px solid #999;
+		 -webkit-border-radius: 6px;
+		 -moz-border-radius: 6px;
+         border-radius: 6px;
+		 outline: none;
+		 -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		 -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		 -webkit-background-clip: padding-box;
+		 -moz-background-clip: padding-box;
+         background-clip: padding-box;
+	   }	
+		
+		.modal-body {
+		 position: relative;
+		 max-height: 80%;
+		 padding: 15px;
+		 overflow-y: auto;
+	   }
+	   
+	   .fc-event:hover{
+    cursor: pointer;
+}
+
+
+
+    </style>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a href="/" class="brand" >National Institute of Technology Calicut</a>
+		  <a style="float:right"; class="brand" href="/login/"><i class="icon-arrow-right"></i>  Login</a>
+		  <a style="float:right"; class="brand" href="/registration/"><i class="icon-arrow-right"></i>  Register</a>
+			<a style="float:right"; class="brand" href="/logout/">Welcome Guest |</a>
+          <!--<a class="brand" style="float=left"; href="#">National Institute of Technology Calicut</a> -->
+         
+        </div>
+      </div>
+    </div>
+<div class="container">
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div id='calendar'>
+			</div>
+
+<div id="infoModal" class="modalInfo hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Event Info</h3>
+  </div>
+  <div class="modal-body1">
+     
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

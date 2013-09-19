@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+{% load dajaxice_templatetags %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>RMS| Booking</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	    {% dajaxice_js_import %}
+	 <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+	<link rel='stylesheet' type='text/css' href='/static/css/fullcalendar.css' />
+	<link rel='stylesheet' type='text/css' href='/static/css/fullcalendar.print.css' media='print' />
+	<script type='text/javascript' src='/static/jquery/jquery-1.8.1.min.js'></script>
+	<script type='text/javascript' src='/static/jquery/jquery-ui-1.8.23.custom.min.js'></script>
+	<script type='text/javascript' src='/static/js/fullcalendar.min.js'></script>
+	<script type='text/javascript' src='/static/js/bootstrap.min.js'></script>
+	<link rel="stylesheet" href="/static/css/jquery-ui.css" />
+	<script src="/static/jquery/jquery.ui.datepicker.js"></script>
+    
+
+
+
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	
+    
+    <script type='text/javascript' src='/static/js/bootbox.min.js'></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    
+  </head>
+
+
+<script type='text/javascript'>
+
+$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			editable: false,
+			events: [
+			    {% for r in res %}
+			    {% for calendar in calendar_list %}
+				{% if r.id == calendar.resource_id %}
+				{
+					
+					{% if calendar.all_day_event == 0 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, {{calendar.start_time}}-{{calendar.end_time}}',
+					
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+					
+					{% if calendar.all_day_event == 1 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, all day',
+					
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+
+					{% if calendar.all_day_event == 2 %}
+					id:'{{calendar.id}}',
+					title: '{{r.name}}, {{calendar.start_date|date:'M d'}}, {{calendar.start_time}}-{{calendar.end_date|date:'M d'}},{{calendar.end_time}}',
+					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
+					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
+					allDay: {{calendar.all_day_event|lower}}
+					
+					{% endif %}
+				},
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+			],
+		 eventClick: function(calEvent, jsEvent, view) {
+
+        		Dajaxice.dashboard.eInfo(Dajax.process,{'option':calEvent.id});
+        		$('#infoModal').modal(options)
+    	 }
+
+	});
+		
+});
+	
+
+	$(function(){
+    	$( "#datepicker" ).datepicker({
+    	 	dateFormat: "yy-mm-dd",
+    	 	minDate: 1,
+    	 	maxDate: "+90D",
+    	 	numberOfMonths: 1,
+    	 }).val('');
+		$( "#datepicker1" ).datepicker({ 
+			dateFormat: "yy-mm-dd",
+			minDate: 1,
+			maxDate: "+90D",
+			numberOfMonths: 1,
+			/*onSelect: function(selected) {
+			          $("#datepicker2").datepicker("option","minDate", selected)
+			        }
+			beforeShow : function(){
+                        $( this ).datepicker('option','maxDate', $('#datepicker2').val() );
+                    }*/
+		}).val('');
+		$( "#datepicker2" ).datepicker({ 
+			dateFormat: "yy-mm-dd",
+			minDate: 1,
+			maxDate:"+90D",
+			numberOfMonths: 1,
+			/*onSelect: function(selected) {
+			           $("#datepicker1").datepicker("option","maxDate", selected)
+			        }
+			beforeShow : function(){
+			    $( this ).datepicker('option','minDate', $('#datepicker1').val() );
+			}*/	
+		}).val('');
+	});
+
+   
+  
+ 
+ 
+ 
+
+</script>
+
+<script>
+
+function day_check1()
+{   
+    //few hours event
+    document.getElementById("status").innerHTML='';
+	$("#sel_date").removeClass("hide");
+	$("#mul_date").addClass("hide");
+	$("#st_time").removeClass("hide");
+	$("#en_time").removeClass("hide");
+    document.getElementById("shr").value='00';
+	document.getElementById("smin").value='60';
+	document.getElementById("ehr").value='00';
+	document.getElementById("emin").value='60';
+
+	document.getElementById( "single" ).setAttribute( "onclick", "Dajaxice.dashboard.book_s(Dajax.process, {'event':document.getElementById('event_s').value,'verify_list':document.getElementById('overwritng_booking_s').value,'add_info':document.getElementById('Add_info_s').value,'start_date':document.getElementById('start_date_s').value,'end_date':document.getElementById('end_date_s').value,'start_hour':document.getElementById('start_hour_s').value,'start_min':document.getElementById('start_min_s').value,'end_hour':document.getElementById('end_hour_s').value,'end_min':document.getElementById('end_min_s').value,'res_id':document.getElementById('combo2').value})");
+
+	$("#shr").prop('disabled', false);
+	$("#ehr").prop('disabled', false);
+	$("#smin").prop('disabled', false);
+	$("#emin").prop('disabled', false);
+
+	$("#datepicker").val('');
+	$('.alert-error').addClass('hide');
+	$('#errorList .showMessage').innerHTML='';
+}
+
+function day_check2()
+{    //all day event
+	 document.getElementById("status").innerHTML='';
+	$("#sel_date").removeClass("hide");
+	$("#mul_date").addClass("hide");
+	$("#st_time").removeClass("hide");
+	$("#en_time").removeClass("hide");
+	document.getElementById("shr").value='08';
+	document.getElementById("smin").value='00';
+	document.getElementById("ehr").value='20';
+	document.getElementById("emin").value='00';
+
+	document.getElementById( "single" ).setAttribute( "onclick", "Dajaxice.dashboard.book_all_day_event(Dajax.process, {'event':document.getElementById('event_s').value,'verify_list':document.getElementById('overwritng_booking_s').value,'add_info':document.getElementById('Add_info_s').value,'start_date':document.getElementById('start_date_s').value,'end_date':document.getElementById('end_date_s').value,'start_hour':document.getElementById('start_hour_s').value,'start_min':document.getElementById('start_min_s').value,'end_hour':document.getElementById('end_hour_s').value,'end_min':document.getElementById('end_min_s').value,'res_id':document.getElementById('combo2').value})");
+
+	$("#shr").prop('disabled', true);
+	$("#ehr").prop('disabled', true);
+	$("#smin").prop('disabled', true);
+	$("#emin").prop('disabled', true);
+
+	$("#datepicker").val('');
+	$('.alert-error').addClass('hide');
+	$('#errorList .showMessage').innerHTML='';
+}
+
+function day_check3()
+{   //multiple day event
+	document.getElementById("status").innerHTML='';
+	$("#sel_date").addClass("hide");
+	$("#mul_date").removeClass("hide");
+	$("#st_time").addClass("hide");
+	$("#en_time").addClass("hide");
+    $("#datepicker1").val('');
+    $("#datepicker2").val('');
+    $('.alert-error').addClass('hide');
+    $('#errorList .showMessage').innerHTML='';
+}
+
+function copy_m()
+{
+    document.getElementById("start_hour_m").value='08';
+	document.getElementById("start_min_m").value='00';
+	document.getElementById("end_hour_m").value='20';
+	document.getElementById("end_min_m").value='00';
+	document.getElementById("start_date_m").value=document.getElementById("datepicker1").value;
+	document.getElementById("end_date_m").value=document.getElementById("datepicker2").value;
+}
+
+function copy_s()
+{
+    document.getElementById("start_hour_s").value=document.getElementById("shr").value;
+	document.getElementById("start_min_s").value=document.getElementById("smin").value;
+	document.getElementById("end_hour_s").value=document.getElementById("ehr").value;
+	document.getElementById("end_min_s").value=document.getElementById("emin").value;
+	document.getElementById("start_date_s").value=document.getElementById("datepicker").value;
+	document.getElementById("end_date_s").value=document.getElementById("datepicker").value;
+}
+
+function setValues(data){
+	$(data.info).val(data.val);
+}
+
+
+function check_resource()
+{	
+	var val = $('input[name=optionsRadios]:checked').val();
+	var option = document.getElementById("combo2").value;
+	if((val == '1' || val =='2' || val =='3') && option !='0'){
+		Dajaxice.dashboard.update_check_new(Dajax.process, {'val':val, 'resource':document.getElementById("combo2").value,'end_hour':document.getElementById('ehr').value,'end_min':document.getElementById('emin').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value,'sel_date':document.getElementById('datepicker').value,'end_date':document.getElementById('datepicker2').value,'start_date':document.getElementById('datepicker1').value});
+	} else {
+		Dajaxice.dashboard.updateinfo(Dajax.process, {'option':document.getElementById("combo2").value});
+		console.log(document.getElementById("combo2").value);
+	};
+}
+
+
+function check_allday()
+{
+	var val = $('input[name=optionsRadios]:checked').val();
+	if(val=='1'){
+		Dajaxice.dashboard.date_check_new(Dajax.process, {'end_hour':document.getElementById('ehr').value,'end_min':document.getElementById('emin').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value,'option':document.getElementById('datepicker').value});
+	}else{
+		Dajaxice.dashboard.date_check(Dajax.process, {'option':document.getElementById('datepicker').value});
+	};
+}
+
+
+function isValidDate(controlName){
+    var isValid = true;
+
+    try{
+        jQuery.datepicker.parseDate("yy-mm-dd", jQuery('#' + controlName).val(), null);
+    }
+    catch(error){
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+function check_date()
+{
+	try{
+	var start_date = document.getElementById('datepicker1').value;
+	var end_date = document.getElementById('datepicker2').value;
+	}catch(error){
+        console.log(error);
+    }
+
+	if(start_date != '' && end_date!=''){
+		Dajaxice.dashboard.both_date_check(Dajax.process, {'start_date':start_date, 'end_date':end_date});
+	} else if(start_date!=''){
+		Dajaxice.dashboard.start_date_check(Dajax.process, {'start_date':start_date});
+	} else if(end_date!=''){
+		Dajaxice.dashboard.end_date_check(Dajax.process, {'end_date':end_date});
+	};
+}
+
+function checksel_date()
+{
+	try{
+		var sel_date = document.getElementById('datepicker').value;
+	}catch(error){
+        console.log(error);
+    }
+
+	if(sel_date != ''){
+		Dajaxice.dashboard.date_check_new(Dajax.process, {'option':sel_date, 'end_hour':document.getElementById('ehr').value,'end_min':document.getElementById('emin').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value});
+	};
+}
+
+
+</script>
+<script>
+
+function book_resource(data){
+	bootbox.confirm(data.message, function(result){
+		if (result){
+			if (data.type == 'single'){
+				copy_s();
+				$('#myModal').modal();
+			}else if (data.type == 'multiple'){
+				copy_m();
+				$('#myModal_multiple').modal();
+			};
+				
+		};
+	});
+}
+
+function hide_modal(data){
+	$(data).modal('hide');
+}
+
+function bootbox_alert(data){
+	bootbox.alert(data.message,function(){
+		window.location.href = data.location;
+	});
+}
+
+</script>
+
+
+<style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+
+	.fc-event-time{
+    		display:none;
+	}
+	  #calendar {
+		width: 60%;
+		margin-left: 40%;
+		margin-right: 0%;
+		}
+	  .container,
+	  .navbar-static-top .container,
+	  .navbar-fixed-top .container,
+	  .navbar-fixed-bottom .container {
+        width: 100%;
+	   }
+  
+  
+	  .navbar .brand {
+		display: block;
+		float: left;
+		padding: 10px 20px 10px;
+		margin-left: 1px;
+		font-size: 13px;
+		font-weight: 200;
+		color: white;
+		text-shadow: 0 1px 0 #474545;
+	   }
+
+
+	   .row-fluid .span3 {
+		 width: 23.404255319148934%;
+		 *width: 23.351063829787233%;
+		 background-color: rgb(166, 175, 170);
+	   }
+
+
+	   .row-fluid .span9 {
+		 width: 70.358974%;
+		 *width: 74.30578286961266%;
+	   }
+  
+	   .row-fluid .span5 {
+		 width: 77.77094%;
+		 *width: 40.11774868157847%;
+	   }
+  
+	   .row-fluid [class*="span"]:first-child {
+		 margin-left: 10px;
+		 width: 30%;
+	   }
+  
+	   .row-fluid .span2 {
+		 width: 16.52991452991453%;
+		 *width: 14.476723040552828%;
+		 position: absolute;
+		 
+	   }
+		
+		.abs {
+		 position: absolute;
+		 
+	   }
+	   footer {
+	
+		margin-left: 30px;
+	
+		bottom:0px;
+	   }  
+
+
+	   .ui-icon,
+	   .ui-widget-content .ui-icon {
+		 background-image: url(/static/img/ui-icons_222222_256x240.png)/*{iconsContent}*/;
+	   }
+
+	   .ui-widget-header .ui-icon {
+		 background-image: url(/static/img/ui-icons_222222_256x240.png)/*{iconsHeader}*/;
+	   }
+
+	   .ui-state-default .ui-icon {
+		 background-image: url(/static/img/ui-icons_888888_256x240.png)/*{iconsDefault}*/;
+	   }
+
+	   .ui-state-hover .ui-icon,
+	   .ui-state-focus .ui-icon {
+		 background-image: url(/static/img/ui-icons_454545_256x240.png)/*{iconsHover}*/;
+	   }
+
+	   .ui-state-active .ui-icon {
+		 background-image: url(/static/img/ui-icons_454545_256x240.png)/*{iconsActive}*/;
+	   }
+
+	   .ui-state-highlight .ui-icon {
+		 background-image: url(/static/img/ui-icons_2e83ff_256x240.png)/*{iconsHighlight}*/;
+	   }
+
+	   .ui-state-error .ui-icon,
+	   .ui-state-error-text .ui-icon {
+		 background-image: url(/static/img/ui-icons_cd0a0a_256x240.png)/*{iconsError}*/;
+	   }
+
+
+
+
+	   .modalbook {
+	     position: fixed;
+	     top: 10%;
+	     left: 50%;
+	     z-index: 1050;
+	     width: 560px;
+	     margin-left: -200px;
+	     background-color: #ffffff;
+	     border: 1px solid #999;
+	     border: 1px solid rgba(0, 0, 0, 0.3);
+	     *border: 1px solid #999;
+	     -webkit-border-radius: 6px;
+	        -moz-border-radius: 6px;
+	             border-radius: 6px;
+	     outline: none;
+	     -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	        -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	             box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+	     -webkit-background-clip: padding-box;
+	        -moz-background-clip: padding-box;
+	             background-clip: padding-box;
+	   }
+
+			
+		 .modalInfo {
+		 position: fixed;
+		 top: 10%;
+		 left: 35%;
+		 z-index: 1050;
+		 width: 60%;
+		 margin-left: -200px;
+		 background-color: #ffffff;
+		 border: 1px solid #999;
+		 border: 1px solid rgba(0, 0, 0, 0.3);
+		 *border: 1px solid #999;
+		 -webkit-border-radius: 6px;
+		 -moz-border-radius: 6px;
+         border-radius: 6px;
+		 outline: none;
+		 -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		 -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+         box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+		 -webkit-background-clip: padding-box;
+		 -moz-background-clip: padding-box;
+         background-clip: padding-box;
+	   }	
+				
+			
+
+	   .modal-body {
+		 position: relative;
+		 max-height: 80%;
+		 padding: 15px;
+		 overflow-y: auto;
+	   }
+	   
+	   .fc-event:hover{
+    	  cursor: pointer;
+		}
+
+    </style>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+			<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a href="/" class="brand" >National Institute of Technology Calicut</a>
+		  
+					<a style="float:right"; class="brand" href="/logout/"><i class="icon-arrow-right"></i>  logout</a>
+					<a style="float:right"; class="brand" href="/dashboard/">Welcome  {{user.first_name}} {{user.last_name}} |</a>
+					<a style="float:right"; class="brand" href="/changepass/">Change password |</a>
+					<!--<a class="brand" style="float=left"; href="#">National Institute of Technology Calicut</a> -->
+				<div class="nav-collapse collapse">
+						<ul class="nav">
+			
+							<li ><a href="/dashboard/">Dashboard</a></li>
+							<li><a href="/profile/">Your Profile</a></li>
+							<li class="active"><a href="/booking/">Booking</a></li>
+							<li><a href="/help/">FAQs</a></li>
+						</ul>
+				</div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+<div class="container-fluid">
+      <div class="row-fluid">
+			<div class="span4 abs">
+				<form class="form-signin" method="post" action="">
+	{% csrf_token %}
+        <p>Book Now</p>
+		<label>Resource type</label>
+       <select onclick="Dajaxice.dashboard.updatecombo(Dajax.process, {'option':this.value})" size="1">
+        <option value="0">Select...</option>
+		{% for resource in resource_type%}
+		<option value="{{resource.type}}">{{resource.type}}</option>
+		{% endfor %}
+        </select>
+        <span id="combo2s" class="combo2s hide">
+		<label>Resource (Click on the Resource)</label>
+        <select id="combo2" onchange="check_resource()" size="1">
+		<option value="0">Select...</option>
+		</select>
+		</span>
+		<span id="infos" class="inf hide">
+		<hr>
+		<label>Resource Info:</label>
+		<p style="background:#ccc; " id="info" ></p>
+		<hr>
+		<label>Resource Location:</label>
+		<p style="background:#ccc; " id="location" ></p>
+        <hr>
+    	</span>
+		<p id="options" class="opt hide">
+		 	<input type="radio" name="optionsRadios" id="optionsRadios1" onchange="day_check1()" value="1" > Few hours event</br>
+		 	<input type="radio" name="optionsRadios" id="optionsRadios2" onchange="day_check2()" value="2" > One day event</br>
+		 	<input type="radio" name="optionsRadios" id="optionsRadios3" onchange="day_check3()" value="3" > Multiple day event<hr>
+		</p>
+		
+
+		<p style="min-height:10px;">
+		<span id="errorList" class="alert-error hide" style="display: default; max-height: 10vh"> 
+    		<a class="close" onclick="$('#errorList').addClass('hide')">×</a>  
+    		<strong>Error!</strong> <span class="showMessage"></span> 
+		</span>
+		</p>
+		<p class="hide" id="sel_date">
+		<label id="startdate">Select Date</label>
+		<input type="text" id="datepicker" placeholder="YYYY-MM-DD" onchange="check_allday()"  ></input> 
+		<span class="alert-error hide" id="seld-error"> 
+    		x
+		</span>
+		</p>
+        <p class="hide" id="mul_date">
+		<label id="startd">Start Date</label>
+		<input type="text" id="datepicker1"  placeholder="YYYY-MM-DD"  onchange="check_date()" ></input>
+		<span class="alert-error hide" id="startd-error"> 
+    		x
+		</span>
+		<label id="endd">End Date</label>
+		<input type="text" id="datepicker2" placeholder="YYYY-MM-DD"  onchange="check_date()" ></input>
+		<span class="alert-error hide" id="endd-error"> 
+    		x
+		</span>
+		</p>
+
+		<p class="hide" id="st_time">
+		<label id="startt">Start Time</label>
+		<select id="shr" onclick="Dajaxice.dashboard.time_check_new(Dajax.process, {'start_hour':this.value,'end_hour':document.getElementById('ehr').value,'end_min':document.getElementById('emin').value,'start_min':document.getElementById('smin').value,'option':document.getElementById('datepicker').value})" class="input-small" size="1">
+		<option value="00">hr</option>
+        <option value="08">08</option>
+		<option value="09">09</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		
+		</select>
+		<select id="smin" onclick="Dajaxice.dashboard.time_check_new(Dajax.process, {'start_min':this.value,'end_hour':document.getElementById('ehr').value,'start_hour':document.getElementById('shr').value,'end_min':document.getElementById('emin').value,'option':document.getElementById('datepicker').value})" class="input-small" size="1">
+        <option value="60">min</option>
+		<option value="00">00</option>
+		<option value="05">05</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="35">35</option>
+		<option value="40">40</option>
+		<option value="45">45</option>
+		<option value="50">50</option>
+		<option value="55">55</option>
+		</select>
+		<span class="alert-error hide" id="startt-error"> 
+    		x
+		</span>
+		</p>
+		<p class="hide" id="en_time">
+		<label id="endt">End Time</label>
+		<select id="ehr" onclick="Dajaxice.dashboard.time_check_new(Dajax.process, {'end_hour':this.value,'end_min':document.getElementById('emin').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value,'option':document.getElementById('datepicker').value})" class="input-small" size="1">
+		<option value="00">hr</option>
+		<option value="08">08</option>
+		<option value="09">09</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		
+		</select>
+		<select id="emin" onclick="Dajaxice.dashboard.time_check(Dajax.process, {'end_min':this.value,'end_hour':document.getElementById('ehr').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value,'option':document.getElementById('datepicker').value})"  class="input-small" size="1">
+        <option value="60">min</option>
+		<option value="00">00</option>
+		<option value="05">05</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="35">35</option>
+		<option value="40">40</option>
+		<option value="45">45</option>
+		<option value="50">50</option>
+		<option value="55">55</option>
+		</select>
+		<span class="alert-error hide" id="endt-error"> 
+    		x
+		</span>
+		</p>
+		
+		<hr>
+        
+      </form>
+	    
+		<label id="status" ></label>
+		<p id="book_modal"></p>
+
+		</div>	
+<div id='calendar'></div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h5 id="myModalLabel">Booking Details</h5>
+  </div>
+  <div class="modal-body">
+      
+		<label></i>Event/ Booking title</label>
+        <input name="title" type="text" id="event_s"  class="input-block-level"  maxlength="300" required />
+		
+		<label>Additional Information</label>
+		<textarea id="Add_info_s" class="input-xlarge" rows="3" maxlength="450" required>No additional information provided</textarea>
+		<hr>
+		
+		<label>Start Date & time</label>
+		<p><input type="text" id="start_date_s" readonly />
+		<input style="width:10%;" placeholder="Hour" type="text" id="start_hour_s" readonly /> <input style="width:10%;" placeholder="Min" type="text" id="start_min_s" readonly /></p>
+		<label>End Date & time</label>
+		<p><input type="text" id="end_date_s" readonly />
+		<input style="width:10%;" placeholder="Hour" type="text" id="end_hour_s" readonly /> <input style="width:10%;"  placeholder="Min" type="text" id="end_min_s" readonly /></p>
+        
+		<hr>
+		<input type="text" style="display:none;" id="overwritng_booking_s"></input>
+        <button  id="single" onclick="Dajaxice.dashboard.book_s(Dajax.process, {'event':document.getElementById('event_s').value,'verify_list':document.getElementById('overwritng_booking_s').value,'add_info':document.getElementById('Add_info_s').value,'start_date':document.getElementById('start_date_s').value,'end_date':document.getElementById('end_date_s').value,'start_hour':document.getElementById('start_hour_s').value,'start_min':document.getElementById('start_min_s').value,'end_hour':document.getElementById('end_hour_s').value,'end_min':document.getElementById('end_min_s').value,'res_id':document.getElementById('combo2').value})" >Book</button>
+      
+  
+</div>
+
+</div>
+
+<div id="myModal_multiple" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h5 id="myModalLabel">Booking Details</h5>
+  </div>
+  <div class="modal-body">
+      
+	  
+		<label></i>Event/ Booking title</label>
+        <input name="title" type="text" id="event_m" class="input-block-level"  maxlength="300" required />
+		<label>Additional Information</label>
+		<textarea id="Add_info_m" rows="3" class="input-xlarge" maxlength="450" required >No additional information provided</textarea>
+		<hr>
+		<label>Start Date & time</label>
+		<p><input type="text" id="start_date_m" readonly />
+		<input style="width:10%;" placeholder="Hour" type="text" id="start_hour_m" readonly /> <input style="width:10%;" placeholder="Min" type="text" id="start_min_m" readonly /></p>
+		<label>End Date & time</label>
+		<p><input type="text" id="end_date_m" readonly />
+		<input style="width:10%;" placeholder="Hour" type="text" id="end_hour_m" readonly /> <input style="width:10%;"  placeholder="Min" type="text" id="end_min_m" readonly /></p>
+        <input type="text" style="display:none;" id="overwritng_booking_m"></input>
+		<hr>
+        <button  onclick="Dajaxice.dashboard.book_m(Dajax.process, {'event':document.getElementById('event_m').value,'verify_list':document.getElementById('overwritng_booking_m').value,'add_info':document.getElementById('Add_info_m').value,'start_date':document.getElementById('start_date_m').value,'end_date':document.getElementById('end_date_m').value,'start_hour':document.getElementById('start_hour_m').value,'start_min':document.getElementById('start_min_m').value,'end_hour':document.getElementById('end_hour_m').value,'end_min':document.getElementById('end_min_m').value,'res_id':document.getElementById('combo2').value})">Book</button>
+      
+  
+</div>
+
+</div>
+
+<div id="infoModal" class="modalInfo hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Event Info</h3>
+  </div>
+  <div class="modal-body1">
+     
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+
+
+
+</div>
+</div>
+
+
+</body>
+</html>

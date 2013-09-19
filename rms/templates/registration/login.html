@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% comment %}
+ 
+Login page to authenticate users.
+ 
+{% endcomment %}
+ 
+{% block title %}RMS | Login{% endblock %}
+ 
+{% block main %}
+    <div class="row">
+         <div class="span4">
+
+    
+        {% if form.errors %}
+            <p class="text-error">Your username and password didn't match, please enter valid login credentials or contact administrator.</p>
+        {% endif %}
+ 
+        <form class="form-signin" method="post" action=".">
+		{% csrf_token %}
+		<h2 class="form-signin-heading">Please Login</h2>
+            <p>
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+            </p>
+            <p>
+                <label for="id_password">Password:</label>
+                {{ form.password }}
+            </p>
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}" />
+            {% else %}
+                <input type="hidden" name="next" value="/dashboard/" />
+            {% endif %}
+            <input  type="submit" value="login" />
+			
+			
+        </form>
+		<a href="/registration/"><button id="register"   type="submit">Not Registered?</button></a>
+		<br></br>
+		
+		
+		 </div>
+        
+         <div class="span4">
+		 <img src="/static/img/shield.jpg" alt="Pulpit rock" width="304" height="228">
+		 </div>
+        
+      </div>
+
+      <hr>
+
+    
+{% endblock %}

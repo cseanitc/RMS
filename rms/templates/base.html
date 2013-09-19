@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+{% load dajaxice_templatetags %} <!-- This line is required to import dajaxice files in the html page -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% dajaxice_js_import %}
+	 <script type="text/javascript" src="/static/css/dajax/jquery.dajax.core.js"></script>
+     
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+           }
+	  
+	  footer {
+        display: block;
+        margin-left: 30px;
+        position:fixed;
+        bottom:0px;
+             } 
+     .btn-block {
+        display: block;
+		width: 70%;
+		padding-right: 0;
+		padding-left: 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+			 
+    </style>
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+	
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> <!-- This line is required for ajax calls -->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    
+  </head>
+
+  <body>
+     
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a href="/" class="brand" >National Institute of Technology Calicut</a>
+		  
+		  <a style="float:right"; class="brand" href="/logout/">{% block logout %}{% endblock %}</a>
+			<a style="float:right"; class="brand" href="/dashboard/">{% block welcome %}{% endblock %}</a>
+          <!--<a class="brand" style="float=left"; href="#">National Institute of Technology Calicut</a> -->
+         {% block menu %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+	 <div class="container">
+	{% block main %}{% endblock %}
+	
+	 
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="/static/css/js/bootstrap.js"></script>
+    
+	
+   	    <script>
+$(document).ready(function(){
+  
+    $("#2").hide();
+  });
+$("#register").click(function(){
+  $("#2").show();
+});
+
+
+
+
+</script> 
+  </body>
+</html>

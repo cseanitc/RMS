@@ -1,0 +1,149 @@
+body {
+	background-color: #CBAC7B;
+	font-family: small Arial,sans-serif;
+	margin: 0 auto;
+	width: 792px;
+}
+#header {
+	font-family: Verdana;
+	padding-top: 20px;
+	text-align: center;
+}
+#header h1 {
+	color: #0D5586;
+	font-size: 54px;
+	text-shadow: 5px 3px 3px #6374AB;
+	margin: 0 0 4px;
+}
+#footer {
+	padding: 10px;
+	text-align: center;
+}
+#header img {
+	vertical-align: middle;
+}
+#date-cur {
+	padding: 10px;
+	color: #105AD6;
+	font-size: 30px;
+	text-align: center;
+}
+
+#calendar {
+	margin: 0 0 0 30px;
+	padding: 0;
+	background-color: #ddd;
+}
+#days {
+	margin: 0 0 0 30px;
+	padding: 0;
+	background-color: #ddd;
+}
+#days li {
+	list-style: none;
+	width: 91px;
+	padding: 5px;
+	border: 1px solid #999;
+	float: left; 
+	background-color: #fff; 
+	overflow: hidden;
+	text-align: center;
+	font-size: 17px;
+	background-color: #E6D7BF;
+}
+#calendar li span {
+	padding-bottom: 4px;
+	display: block;
+}
+#calendar li {
+	list-style: none;
+	font-weight: bold;
+	width: 91px;
+	height: 88px;
+	border: 1px solid #999;
+	float: left; 
+	background-color: #fff; 
+	padding: 5px;
+	overflow: hidden;
+	position: relative;
+}
+#calendar li ul {
+	margin: 0;
+	padding: 0;
+	clear: both; }
+#calendar li ul li {
+	list-style: none;
+	font-weight: normal;
+	float: none;
+	border: none;
+	padding: 5px 0;
+	margin: 0;
+}
+#calendar li.inactive {
+	background-color: #ddd;
+	color: #999;
+}
+#calendar li.active {
+	background-color: #B5CEF9;
+}
+#calendar li.today {
+	background-color: #eee;
+}
+#add-event:hover {
+	background-color: #ddd;
+}
+#add-event, .add-event {
+	text-decoration: none;
+	background-color: #F4F4F4;
+	border: 1px solid #ccc;
+	padding: 0px 6px;
+	font-size: 20px;
+}
+#add-event {
+	position: absolute;
+	top: 4px;
+	left: 72px;
+}
+.clear { 
+   clear: both;
+}
+#new-event {
+	background-color: #F9F9F9;
+	border: 1px solid #727272;
+	box-shadow: 10px 11px 15px #9F9F9F;
+	position: absolute;
+	width: 400px;
+	display: none;
+}
+#new-event textarea {
+	width: 100%;
+	height: 270px;
+}
+#create-event {
+	cursor: pointer;
+	color: #535353;
+	font-size: 15px;
+}
+#event-bar {
+	padding: 4px;
+	text-align: center;
+}
+.event-item {
+	background-color: #FAFAFA;
+	color: #777777;
+	cursor: pointer;
+	line-height: 16px;
+	padding: 2px 9px;
+	font-size: 11px;
+	margin: 1px;
+	font-weight: normal;
+	border: 1px solid #999999;
+}
+#delete-event {
+	display: none;
+	float: left;
+}
+.events {
+	overflow: auto;
+	height: 70px;
+}
