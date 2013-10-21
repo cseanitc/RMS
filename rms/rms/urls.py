@@ -48,6 +48,9 @@ urlpatterns = patterns('',
 	
 	# FAQs page
     (r'^help/$',help),
+
+    # Creditss page
+    (r'^credits/$',credits),
 	
 	#This mapping is important for incorporating Django's Admin module in our project. If removed Admin module won't work.
     (r'^admin/', include(admin.site.urls)),

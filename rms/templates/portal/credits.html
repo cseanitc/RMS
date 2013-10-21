@@ -65,8 +65,8 @@
               <li ><a href="/dashboard/">Dashboard</a></li>
               <li><a href="/profile/">Your Profile</a></li>
                <li><a href="/booking/">Booking</a></li>
-			   <li class="active" ><a href="/help/">FAQs</a></li>
-         <li><a href="/credits/">Credits</a></li>
+			         <li><a href="/help/">FAQs</a></li>
+              <li class="active"><a href="/credits/">Credits</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 
@@ -82,7 +82,6 @@
 <div class="container">
 
 <style type="text/css">
-      .container,
 	  .navbar-static-top .container,
       .navbar-fixed-top .container,
       .navbar-fixed-bottom .container {
@@ -99,79 +98,20 @@
 		color: white;
 		text-shadow: 0 1px 0 #474545;
 	   }
+  
+    body {
+        padding-top: 50px;
+    }
 
-
-	   
-
-	   .row-fluid .span9 {
-		 width: 90%;
-		 *width: 74.30578286961266%;
-	   }
-  
-	   .row-fluid .span5 {
-		 width: 99.77094%;
-		 *width: 40.11774868157847%;
-	   }
-  
-	   .row-fluid [class*="span"]:first-child {
-		 margin: auto;
-	   }
-  
-  
+    .margin-base-vertical {
+        margin: 40px 0;
+    }
 		
     </style>
  
+      {% include "portal/credits_base.html" %}
  
- 
- <div class="container-fluid">
-      <div class="row-fluid">
-		<div class="span9">	
-        
-		<h3>Frequently Asked Questions</h3>
-		<div id="accordion">
-		<h4 >1. Can we book a resource on today's date</h4>
-			  <div class="accordion-inner">
-				<p>
-                &#9658; Resources management system does not allow booking for the current date to be done on current date.
-				You can only book resources from the day next to the current date.
-				</p>
-			  </div>
-		<h4>2. Can anyone register for Resources management system</h4>
-			  <div class="accordion-inner">
-				<p>
-                &#9658; Since Resources management system is built with the sole purpose to manage
-				various resources of Computer Science and Engineering department of National Institute of Technology,
-                only Faculty, staff and students are allowed to do registration. However students need to get their registration approved from the admin 
-                so that they can start using the system.				
-				</p>
-			    </div>
-		  
-        
-      </div>
-	  </div><!--/row-->
-
-      
-
-      
-
-    </div><!--/.fluid-container-->
-
-
-
- 
-
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    
-    <script src="/static/css/js/bootstrap.js"></script>
-    <script>
-  $(function() {
-    $( "#accordion" ).accordion();
-  });
-  </script>
+  </div>
 	
   </body>
 </html>

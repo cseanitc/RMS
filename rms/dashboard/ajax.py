@@ -10,6 +10,7 @@ from resource.models import *
 import jsonpickle
 from django.db.models import Q
 import threading
+from django.core.validators import email_re
 
 @dajaxice_register()
 def updatecombo(request,option):
@@ -51,6 +52,8 @@ def updateprofile(request,fname,lname,email,cno):
          dajax.add_data('Email can not be left blank','bootbox.alert')
     elif cno=='':
          dajax.add_data('Contact number can not be left blank','bootbox.alert')
+    elif not email_re.match(email):
+         dajax.add_data('Invalid email address','bootbox.alert')
     else:
          u.first_name=fname
          u.last_name=lname
@@ -95,8 +98,7 @@ def cancel_booking(request,option):
     dajax = Dajax()
     booking=Booked_resource.objects.get(id=option)
     booking.delete()
-    dajax.add_data('Your booking has been cancelled','bootbox.alert')
-    dajax.redirect('/dashboard/', delay=3000)
+    dajax.add_data({'message':'Your booking has been cancelled.', 'location':'/dashboard/'}, 'bootbox_alert')
     return dajax.json()
 
 
@@ -104,7 +106,7 @@ def cancel_booking(request,option):
 def eInfo(request,option):
     dajax = Dajax()
     now=datetime.now().date()
-    booking=Booked_resource.objects.get(id=option).filter(Q(start_date__gte=now)|Q(end_date__gte=now))
+    booking=Booked_resource.objects.get(id=option)
     input =[];
     input.append('<table class="table table-striped"><thead></thead><tr><th>Event Name</th><th>Resource Name</th><th>Resource Type</th><th>Booked By</th><th>Additional Information</th></tr><tr><td>'+booking.Event_name+'</td><td>'+booking.resource_name+'</td><td>'+booking.resource_type+'</td><td>'+booking.Booked_by+'</td><td>'+booking.Purpose_of_booking+'</td></tr><tbody></tbody></table>')
     dajax.assign('.modal-body1', 'innerHTML',''.join(input))
@@ -409,7 +411,7 @@ def multiple_booking_check(request,option,start_date,end_date,res_id):
             u=User.objects.get(username=r.Booked_by)
             profile=UserProfile.objects.get(id=u.id)
             booked_priority=Priority_table.objects.get(Designation=profile.designation).Priority_num
-            if (start_date >= r.start_date and start_date <=r.end_date) or (end_date >= r.start_date and end_date <= r.end_date):
+            if (start_date >= r.start_date and start_date <=r.end_date) or (end_date >= r.start_date and end_date <= r.end_date) or (start_date <= r.start_date and end_date >= r.end_date):
                 if allocation_policy == 'PRIOR':
                     if user_priority < booked_priority:
                         overwrite = False
@@ -507,7 +509,7 @@ def single_booking_check(request,end_hour,end_min,start_hour,start_min,option,re
                         elif allocation_policy == 'FCFS':
                             book = False
                             break
-                    elif (start_time >= r.start_time and start_time <=r.end_time) or (end_time >= r.start_time and end_time <= r.end_time):
+                    elif (start_time >= r.start_time and start_time <=r.end_time) or (end_time >= r.start_time and end_time <= r.end_time) or (start_time <= r.start_time and end_time >= r.end_time):
                         if allocation_policy == 'PRIOR':
                             if user_priority < booked_priority:
                                 overwrite = False
@@ -587,7 +589,7 @@ def book_m(request,event,add_info,start_date,end_date,start_hour,start_min,end_h
                 u=User.objects.get(username=r.Booked_by)
                 profile=UserProfile.objects.get(id=u.id)
                 booked_priority=Priority_table.objects.get(Designation=profile.designation).Priority_num
-                if (start_date >= r.start_date and start_date <=r.end_date) or (end_date >= r.start_date and end_date <= r.end_date):
+                if (start_date >= r.start_date and start_date <=r.end_date) or (end_date >= r.start_date and end_date <= r.end_date) or (start_date <= r.start_date and end_date >= r.end_date):
                     if allocation_policy == 'PRIOR':
                         if user_priority < booked_priority:
                             overwrite = False
@@ -689,7 +691,7 @@ def book_s(request,event,add_info,start_date,end_date,start_hour,start_min,end_h
                             elif allocation_policy == 'FCFS':
                                 book = False
                                 break
-                        elif (start_time >= r.start_time and start_time <=r.end_time) or (end_time >= r.start_time and end_time <= r.end_time):
+                        elif (start_time >= r.start_time and start_time <=r.end_time) or (end_time >= r.start_time and end_time <= r.end_time) or (start_time <= r.start_time and end_time >= r.end_time):
                             if allocation_policy == 'PRIOR':
                                 if user_priority < booked_priority:
                                     overwrite = False

@@ -9,6 +9,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
 from datetime import datetime
+from django.core.validators import email_re
 
 #========================================================================================================================================================================================================== 
  
@@ -65,6 +66,12 @@ def help(request):
 
 
 
+#==========================================================================================================================================================================================================	
+def credits(request):
+	if request.user.is_authenticated():
+		return render_to_response('portal/credits.html',context_instance=RequestContext(request))
+	else:
+		return render_to_response('portal/credits_simple.html',context_instance=RequestContext(request))
 #==========================================================================================================================================================================================================
 	
 @login_required	

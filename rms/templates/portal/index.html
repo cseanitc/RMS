@@ -42,7 +42,12 @@
 	{
 		Dajaxice.dashboard.cancel_booking(Dajax.process, {'option':id})
 	}
- 
+ 	
+ 	function bootbox_alert(data){
+		bootbox.alert(data.message,function(){
+			window.location.href = data.location;
+		});
+	}
 	</script> 
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -76,6 +81,7 @@
               <li><a href="/profile/">Your Profile</a></li>
                <li><a href="/booking/">Booking</a></li>
 			   <li><a href="/help/">FAQs</a></li>
+			   <li><a href="/credits/">Credits</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 
@@ -154,6 +160,7 @@
 				  <th>Serial no.</th>
                   <th>Booking id</th>
 				  <th>Event name</th>
+				  <th>Resource</th>
                   <th>Additional Information</th>
 				  <th>Start date</th>
 				  <th>Start time</th>
@@ -168,6 +175,7 @@
                   <td>{{forloop.counter}}</td>
 				  <td>{{booking.id}}</td>
                   <td>{{booking.Event_name}}</td>
+                  <td>{{booking.resource_name}}</td>
 				  <td>{{booking.Purpose_of_booking}}</td>
 				  <td>{{booking.start_date}}</td>
 				  <td>{{booking.start_time}}</td>
