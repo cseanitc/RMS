@@ -11,6 +11,9 @@ import jsonpickle
 from django.db.models import Q
 import threading
 from django.core.validators import email_re
+from django.template.loader import get_template
+from django.template import Context
+from django.conf import settings
 
 @dajaxice_register()
 def updatecombo(request,option):
@@ -64,17 +67,20 @@ def updateprofile(request,fname,lname,email,cno):
          dajax.add_data({'message':'Your profile has been successfully updated','location':'/profile/'}, 'bootbox_alert')
     return dajax.json()
 
-    
 @dajaxice_register()
 def updateinfo(request,option):
+    now=datetime.now().date()
     dajax = Dajax()
+    calendar_list=[]
     if option !='0' and option != None:
         infor=Resource.objects.get(id=option)
+        calendar_list=Booked_resource.objects.all().filter(Q(start_date__gte=now)|Q(end_date__gte=now)).filter(resource_id=option)
         dajax.assign('#info', 'innerHTML',infor.Add_information)
         dajax.assign('#location', 'innerHTML',infor.location)
         dajax.remove_css_class('#options', 'hide')
         dajax.remove_css_class('#infos', 'hide')
     else:
+        calendar_list=Booked_resource.objects.all().filter(Q(start_date__gte=now)|Q(end_date__gte=now))
         dajax.add_css_class('#infos', 'hide')
         dajax.add_css_class('#options', 'hide')
         dajax.add_css_class('#infos', 'hide')
@@ -90,6 +96,14 @@ def updateinfo(request,option):
         dajax.add_data('','$("input[name=optionsRadios]:checked").val')
         dajax.add_data('checked','$("input[name=optionsRadios]:checked").removeAttr')
         dajax.clear('#status', 'innerHTML')
+    calendar_lists=[]
+    for calendar in calendar_list:
+        calendar.start_datetime=datetime(calendar.start_date.year,calendar.start_date.month,calendar.start_date.day,calendar.start_time.hour,calendar.start_time.minute).isoformat()+".000000+0530"
+        calendar.end_datetime=datetime(calendar.end_date.year,calendar.end_date.month,calendar.end_date.day,calendar.end_time.hour,calendar.end_time.minute).isoformat()+".000000+0530"
+        calendar.start_date=calendar.start_date.strftime("%b %d")
+        calendar.end_date=calendar.end_date.strftime("%b %d")
+        calendar_lists.append(jsonpickle.encode(calendar,unpicklable=False))
+    dajax.add_data(calendar_lists,'update_bookings')
     return dajax.json()
 
 
@@ -338,13 +352,17 @@ def both_date_check(request,start_date,end_date):
 @dajaxice_register()    
 def update_check_new(request,val,resource,end_hour,end_min,start_hour,start_min,start_date,end_date,sel_date):
     dajax = Dajax()
+    now=datetime.now().date()
+    calendar_list = []
     if resource !='0' and resource != None:
         infor=Resource.objects.get(id=resource)
+        calendar_list=Booked_resource.objects.all().filter(Q(start_date__gte=now)|Q(end_date__gte=now)).filter(resource_id=resource)
         dajax.assign('#info', 'innerHTML',infor.Add_information)
         dajax.assign('#location', 'innerHTML',infor.location)
         dajax.remove_css_class('#options', 'hide')
         dajax.remove_css_class('#infos', 'hide')
     else:
+        calendar_list=Booked_resource.objects.all().filter(Q(start_date__gte=now)|Q(end_date__gte=now))
         dajax.add_css_class('#infos', 'hide')
         dajax.add_css_class('#options', 'hide')
         dajax.add_css_class('#options', 'hide')
@@ -358,6 +376,14 @@ def update_check_new(request,val,resource,end_hour,end_min,start_hour,start_min,
         dajax.add_data('','$("input[name=optionsRadios]:checked").val')
         dajax.add_data('checked','$("input[name=optionsRadios]:checked").removeAttr')
     dajax.clear('#status', 'innerHTML')
+    calendar_lists=[]
+    for calendar in calendar_list:
+        calendar.start_datetime=datetime(calendar.start_date.year,calendar.start_date.month,calendar.start_date.day,calendar.start_time.hour,calendar.start_time.minute).isoformat()+".000000+0530"
+        calendar.end_datetime=datetime(calendar.end_date.year,calendar.end_date.month,calendar.end_date.day,calendar.end_time.hour,calendar.end_time.minute).isoformat()+".000000+0530"
+        calendar.start_date=calendar.start_date.strftime("%b %d")
+        calendar.end_date=calendar.end_date.strftime("%b %d")
+        calendar_lists.append(jsonpickle.encode(calendar,unpicklable=False))
+    dajax.add_data(calendar_lists,'update_bookings')
     val = int(val)
     d = dajax.json()
     s=None

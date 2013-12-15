@@ -30,7 +30,7 @@
 	  }  
     </style>
     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
-	<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />-->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	
@@ -42,6 +42,7 @@
     
     
   </head>
+
 
   <body>
      
@@ -106,6 +107,7 @@
 	   .row-fluid .span9 {
 		 width: 90%;
 		 *width: 74.30578286961266%;
+     float: center;
 	   }
   
 	   .row-fluid .span5 {
@@ -116,7 +118,10 @@
 	   .row-fluid [class*="span"]:first-child {
 		 margin: auto;
 	   }
-  
+    
+    .centered{
+    margin: 0 auto;
+    }
   
 		
     </style>
@@ -125,28 +130,26 @@
  
  <div class="container-fluid">
       <div class="row-fluid">
-		<div class="span9">	
+        <div class="centered">
+		      <div class="span9">	
         
-		<h3>Frequently Asked Questions</h3>
-		<div id="accordion">
-		<h4 >1. Can we book a resource on today's date</h4>
-			  <div class="accordion-inner">
-				<p>
-                &#9658; Resources management system does not allow booking for the current date to be done on current date.
-				You can only book resources from the day next to the current date.
-				</p>
-			  </div>
-		<h4>2. Can anyone register for Resources management system</h4>
-			  <div class="accordion-inner">
-				<p>
-                &#9658; Since Resources management system is built with the sole purpose to manage
-				various resources of Computer Science and Engineering department of National Institute of Technology,
-                only Faculty, staff and students are allowed to do registration. However students need to get their registration approved from the admin 
-                so that they can start using the system.				
-				</p>
-			    </div>
+        		<h3>Frequently Asked Questions</h3>
+        		<div id="accordion">
+        		<h4 >1. Can we book a resource on today's date</h4>
+        			  <div class="accordion-inner">
+        				<p>
+                 Resources management system does not allow booking for the current date to be done on current date. You can only book resources from the day next to the current date.
+        				</p>
+        			  </div>
+        		<h4>2. Can anyone register for Resources management system</h4>
+        			  <div class="accordion-inner">
+        				<p>
+                        Since Resources management system is built with the sole purpose to manage various resources of Computer Science and Engineering department of National Institute of Technology, only Faculty, staff and students are allowed to do registration. However students need to get their registration approved from the admin so that they can start using the system.				
+        				</p>
+        			 </div>
 		  
         
+      </div>
       </div>
 	  </div><!--/row-->
 
@@ -158,7 +161,7 @@
 
 
 
- 
+    </div>
 
     </div> <!-- /container -->
 
@@ -167,9 +170,23 @@
     <!-- Placed at the end of the document so the pages load faster -->
     
     <script src="/static/css/js/bootstrap.js"></script>
-    <script>
+   <script>
   $(function() {
-    $( "#accordion" ).accordion();
+    var icons = {
+      header: "ui-icon-circle-arrow-e",
+      activeHeader: "ui-icon-circle-arrow-s"
+    };
+    $( "#accordion" ).accordion({
+      icons: icons,
+      heightStyle: "content"
+    });
+    $( "#toggle" ).button().click(function() {
+      if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
+        $( "#accordion" ).accordion( "option", "icons", null );
+      } else {
+        $( "#accordion" ).accordion( "option", "icons", icons );
+      }
+    });
   });
   </script>
 	

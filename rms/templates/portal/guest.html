@@ -66,7 +66,7 @@ $(document).ready(function() {
 					
 					{% if calendar.all_day_event == 0 %}
 					id:'{{calendar.id}}',
-					title: '{{r.name}}, {{calendar.start_time}}-{{calendar.end_time}}',
+					title: '{{r.name}}, {{calendar.start_time|time:"H:i"}}-{{calendar.end_time|time:"H:i"}}',
 					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
 					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
 					allDay: {{calendar.all_day_event|lower}}
@@ -84,7 +84,7 @@ $(document).ready(function() {
 
 					{% if calendar.all_day_event == 2 %}
 					id:'{{calendar.id}}',
-					title: '{{r.name}}, {{calendar.start_date|date:'M d'}}, {{calendar.start_time}}-{{calendar.end_date|date:'M d'}}, {{calendar.end_time}}',
+					title: '{{r.name}}, {{calendar.start_date|date:'M d'}}-{{calendar.end_date|date:'M d'}}',
 					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
 					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
 					allDay: {{calendar.all_day_event|lower}}

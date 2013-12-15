@@ -56,14 +56,14 @@ $(document).ready(function() {
 			},
 			editable: false,
 			events: [
-			    {% for r in res %}
+			    
 			    {% for calendar in calendar_list %}
-				{% if r.id == calendar.resource_id %}
+				
 				{
 					
 					{% if calendar.all_day_event == 0 %}
 					id:'{{calendar.id}}',
-					title: '{{r.name}}, {{calendar.start_time}}-{{calendar.end_time}}',
+					title: '{{calendar.resource_name}}, {{calendar.start_time|time:"H:i"}}-{{calendar.end_time|time:"H:i"}}',
 					
 					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
 					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
@@ -73,7 +73,7 @@ $(document).ready(function() {
 					
 					{% if calendar.all_day_event == 1 %}
 					id:'{{calendar.id}}',
-					title: '{{r.name}}, all day',
+					title: '{{calendar.resource_name}}, all day',
 					
 					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
 					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
@@ -83,16 +83,16 @@ $(document).ready(function() {
 
 					{% if calendar.all_day_event == 2 %}
 					id:'{{calendar.id}}',
-					title: '{{r.name}}, {{calendar.start_date|date:'M d'}}, {{calendar.start_time}}-{{calendar.end_date|date:'M d'}},{{calendar.end_time}}',
+					title: '{{calendar.resource_name}}, {{calendar.start_date|date:'M d'}}-{{calendar.end_date|date:'M d'}}',
 					start: new Date({{calendar.start_date.year}}, {{calendar.start_date.month}}-1, {{calendar.start_date.day}}, {{calendar.start_time.hour}}, {{calendar.start_time.minute}}),
 					end: new Date({{calendar.end_date.year}}, {{calendar.end_date.month}}-1, {{calendar.end_date.day}}, {{calendar.end_time.hour}}, {{calendar.end_time.minute}}),
 					allDay: {{calendar.all_day_event|lower}}
 					
 					{% endif %}
 				},
-				{% endif %}
+				
 				{% endfor %}
-				{% endfor %}
+				
 			],
 		 eventClick: function(calEvent, jsEvent, view) {
 
@@ -147,6 +147,31 @@ $(document).ready(function() {
 </script>
 
 <script>
+
+function update_bookings(calendar_list){
+	$('#calendar').fullCalendar('removeEvents');
+	var events = new Array();
+	monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun','Jul',
+                      'Aug','Sep','Okt','Nov','Dec'];
+	//console.log(calendar_list);
+	for (var key = 0; key<calendar_list.length;key++) {
+		var calendar = JSON.parse(calendar_list[key]);
+		var title = "Undefined";
+		if (calendar.all_day_event == '0') {
+			title = calendar.resource_name+", "+calendar.start_time.substring(0,5)+"-"+calendar.end_time.substring(0,5);
+		} else if (calendar.all_day_event == '1') {
+			title = calendar.resource_name+", all day";
+		} else if (calendar.all_day_event == '2') {
+			title = calendar.resource_name+", "+calendar.start_date+"-"+calendar.end_date;
+		}
+		var start = new Date(calendar.start_datetime);
+		var end = new Date(calendar.end_datetime);
+   		events[key]={'id':calendar.id, 'title': title, 'start': start, 'end': end, 'allDay': calendar.all_day_event };
+   	};
+   	//console.log(events);
+	$('#calendar').fullCalendar('addEventSource', events);
+	/*$('#calendar').fullCalendar('rerenderEvents');*/
+}
 
 function day_check1()
 {   
@@ -243,7 +268,7 @@ function check_resource()
 		Dajaxice.dashboard.update_check_new(Dajax.process, {'val':val, 'resource':document.getElementById("combo2").value,'end_hour':document.getElementById('ehr').value,'end_min':document.getElementById('emin').value,'start_hour':document.getElementById('shr').value,'start_min':document.getElementById('smin').value,'sel_date':document.getElementById('datepicker').value,'end_date':document.getElementById('datepicker2').value,'start_date':document.getElementById('datepicker1').value});
 	} else {
 		Dajaxice.dashboard.updateinfo(Dajax.process, {'option':document.getElementById("combo2").value});
-		console.log(document.getElementById("combo2").value);
+		//console.log(document.getElementById("combo2").value);
 	};
 }
 
